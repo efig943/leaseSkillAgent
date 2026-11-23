@@ -1,6 +1,6 @@
 # tests/test_create_lease.py
 import pytest
-from scripts.create_lease import validate_lease_args, build_template_vars
+from scripts.create_lease import validate_lease_args, build_template_vars, format_date
 
 def test_validate_lease_args_missing_name():
     with pytest.raises(ValueError, match="tenant_name is required"):
@@ -14,6 +14,22 @@ def test_validate_lease_args_defaults():
     assert args["rent"] == "$800"
     assert args["deposit"] == "$800.00"
     assert "robot sweeper" in args["chore"]
+
+def test_format_date_normalization():
+    assert format_date("2026-08-01") == "8/1/2026"
+    assert format_date("08/01/2026") == "8/1/2026"
+    assert format_date("August 1, 2026") == "8/1/2026"
+    with pytest.raises(ValueError, match="Invalid date format"):
+        format_date("invalid-date")
+
+def test_validate_lease_args_date_ordering():
+    with pytest.raises(ValueError, match="must be before"):
+        validate_lease_args("Jane Doe", "8/1/2027", "8/1/2026")
+
+def test_currency_normalization():
+    args = validate_lease_args("Jane Doe", "7/1/2026", "6/30/2027", rent="950", deposit="950")
+    assert args["rent"] == "$950"
+    assert args["deposit"] == "$950"
 
 def test_build_template_vars():
     args = {

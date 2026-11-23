@@ -19,12 +19,13 @@ This skill creates a customized California Residential Lease Agreement in Google
 | Variable | Description | Default Value | Required? |
 |---|---|---|---|
 | `tenant_name` | Full legal name of tenant | (None) | **Yes** |
-| `start_date` | Commencement Date (e.g., `8/1/2026`) | (None) | **Yes** |
-| `end_date` | Termination Date (e.g., `7/31/2027`) | (None) | **Yes** |
+| `start_date` | Commencement Date (`M/D/YYYY` or `YYYY-MM-DD`) | (None) | **Yes** |
+| `end_date` | Termination Date (`M/D/YYYY` or `YYYY-MM-DD`) | (None) | **Yes** |
 | `rent` | Monthly rent amount | `$800` | Optional |
 | `deposit` | Security deposit amount | `$800.00` | Optional |
 | `chore` | Assigned household chore | `making sure the robot sweeper is clean and empty every week, as well as once a month mop the floors. Be careful since the floors are wood.` | Optional |
-| `parking` | Parking terms | `one car in the driveway` | Optional |
+
+> **Note on House Rules:** Standard rules for 1375 Michelle Ave (Parking: 1 car in driveway; Quiet hours: 10 PM - 7 AM; Smoking: not permitted; Utilities: split with other tenants) are built into the template document.
 
 ## Procedure
 
@@ -34,27 +35,27 @@ Verify that you have the tenant's full name, lease start date, and lease end dat
 - Confirm if custom rent, deposit, or household chore instructions were requested; otherwise, use the defaults above.
 
 ### 2. Execute Lease Creation
-Run the generator script with the provided parameters:
+Run the generator script with the provided parameters (note: do NOT double-quote `$` in bash; pass numbers directly like `--rent 800` or use single quotes):
 
 ```bash
 python3 scripts/create_lease.py \
   --tenant "Tenant Full Name" \
-  --start "M/D/YYYY" \
-  --end "M/D/YYYY" \
-  [--rent "$800"] \
-  [--deposit "$800.00"] \
+  --start "8/1/2026" \
+  --end "7/31/2027" \
+  [--rent 800] \
+  [--deposit 800.00] \
   [--chore "Custom chore description"]
 ```
 
-Alternatively, invoke `gdocs` directly:
+Alternatively, invoke `gdocs` directly with single quotes around variables containing `$` to prevent shell expansion:
 
 ```bash
 gdocs mutate create-from-template 1qr-5EWMLP_dHGzzLvSsh8bV1z2fsyjN026aHwsrOSS8 "Tenant Full Name Lease" \
   --var "TENANT_NAME=Tenant Full Name" \
-  --var "START_DATE=M/D/YYYY" \
-  --var "END_DATE=M/D/YYYY" \
-  --var "RENT_AMOUNT=$800" \
-  --var "SECURITY_DEPOSIT=$800.00" \
+  --var "START_DATE=8/1/2026" \
+  --var "END_DATE=7/31/2027" \
+  --var 'RENT_AMOUNT=$800' \
+  --var 'SECURITY_DEPOSIT=$800.00' \
   --var "HOUSEHOLD_CHORE=making sure the robot sweeper is clean and empty every week, as well as once a month mop the floors. Be careful since the floors are wood."
 ```
 
