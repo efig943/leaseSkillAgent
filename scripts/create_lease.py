@@ -140,6 +140,7 @@ def main():
     parser.add_argument("--rent", default=DEFAULT_RENT, help=f"Monthly rent (default: {DEFAULT_RENT})")
     parser.add_argument("--deposit", default=DEFAULT_DEPOSIT, help=f"Security deposit (default: {DEFAULT_DEPOSIT})")
     parser.add_argument("--chore", default=DEFAULT_CHORE, help="Household chore assigned to tenant")
+    parser.add_argument("--template", help="Custom Google Doc template ID (overrides template_config.json)")
     parser.add_argument("--dry-run", action="store_true", help="Print command without creating document")
 
     args = parser.parse_args()
@@ -151,7 +152,8 @@ def main():
             rent=args.rent,
             deposit=args.deposit,
             chore=args.chore,
-            dry_run=args.dry_run
+            dry_run=args.dry_run,
+            template_id=args.template
         )
         if args.dry_run:
             print("Dry run successful:")
