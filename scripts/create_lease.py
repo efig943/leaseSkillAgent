@@ -49,6 +49,8 @@ def format_currency(val: str, default: str) -> str:
     raw = cleaned.replace("$", "").replace(",", "")
     try:
         num = float(raw)
+        if "." in cleaned:
+            return f"${num:.2f}"
         if num.is_integer():
             return f"${int(num)}"
         return f"${num:.2f}"
@@ -69,6 +71,9 @@ def validate_lease_args(tenant_name, start_date, end_date, rent=None, deposit=No
 
     clean_rent = format_currency(rent, DEFAULT_RENT)
     clean_deposit = format_currency(deposit, DEFAULT_DEPOSIT)
+    clean_chore = chore.strip() if chore else DEFAULT_CHORE
+    if clean_chore and not clean_chore.endswith((".", "!", "?")):
+        clean_chore += "."
 
     return {
         "tenant_name": tenant_name.strip(),
@@ -76,7 +81,7 @@ def validate_lease_args(tenant_name, start_date, end_date, rent=None, deposit=No
         "end_date": norm_end,
         "rent": clean_rent,
         "deposit": clean_deposit,
-        "chore": chore.strip() if chore else DEFAULT_CHORE
+        "chore": clean_chore
     }
 
 def build_template_vars(args: dict) -> list[str]:
