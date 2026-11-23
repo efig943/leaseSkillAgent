@@ -1,0 +1,13 @@
+{
+  "template_doc_id": "1qr-5EWMLP_dHGzzLvSsh8bV1z2fsyjN026aHwsrOSS8",
+  "source_doc_id": "1k7bN5RUz1z__B7TRsWooZrg-AKf6G0cHGbNNleO-9xM",
+  "template_title": "Residential Lease Master Template",
+  "placeholders": [
+    "TENANT_NAME",
+    "START_DATE",
+    "END_DATE",
+    "RENT_AMOUNT",
+    "SECURITY_DEPOSIT",
+    "HOUSEHOLD_CHORE"
+  ]
+}
