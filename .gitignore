@@ -1,3 +1,11 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Private signing integration
+.env*
+*signwell*
+scripts/private/
+tests/private/
+.agents/skills/send-lease-signature/
+*.pdf
